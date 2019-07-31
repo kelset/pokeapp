@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import type { NavigationScreenProp } from 'react-navigation';
 
 type Props = {
-  navigation: NavigationScreenProp,
+  navigation: NavigationScreenProp<any>,
 };
 
 export function HomeScreen(props: Props): React$Node {

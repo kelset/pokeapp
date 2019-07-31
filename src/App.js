@@ -2,9 +2,10 @@
  * @flow
  */
 
-import { useScreens } from 'react-native-screens';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import codePush from 'react-native-code-push';
+// $FlowFixMe - flow is drunk again
+import { useScreens } from 'react-native-screens';
 
 import { HomeScreen } from './HomeScreen';
 import { DetailsScreen } from './DetailsScreen';
