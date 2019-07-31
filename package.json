@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "graphql": "14.4.2",
+    "graphql-tag": "2.10.1",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-code-push": "5.6.1",

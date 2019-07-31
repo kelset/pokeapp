@@ -3,8 +3,11 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { useQuery } from 'urql';
+import gql from 'graphql-tag';
 
 import type { NavigationScreenProp } from 'react-navigation';
 
@@ -12,7 +15,27 @@ type Props = {
   navigation: NavigationScreenProp<any>,
 };
 
+const PokemonsQuery = gql`
+  query pokemons {
+    pokemons(first: 10) {
+      number
+      name
+      classification
+      image
+      types
+    }
+  }
+`;
+
 export function HomeScreen(props: Props): React$Node {
+  const [result] = useQuery({ query: PokemonsQuery });
+
+  const { fetching, data, error } = result;
+
+  if (error) {
+    return <Text>{result.error.message}</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -23,6 +46,13 @@ export function HomeScreen(props: Props): React$Node {
       >
         <Text style={styles.welcome}>Hello this is the home screen</Text>
       </TouchableOpacity>
+      {fetching ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <Text
+          style={styles.welcome}
+        >{`I have a list of ${data.length} Pokemons`}</Text>
+      )}
     </View>
   );
 }
