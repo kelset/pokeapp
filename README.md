@@ -4,6 +4,6 @@ This is a simple app that wants to use the [PokeApi](https://pokeapi.co/) via th
 
 Will use [urql]() as GraphQL client.
 
-## Acknowledgment
+## Acknowledgment
 
 Project bootstrapped using @AndrewJack's [react-native-starter](https://github.com/AndrewJack/react-native-starter).
