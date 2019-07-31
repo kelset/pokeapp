@@ -27,7 +27,7 @@ const PokemonsQuery = gql`
   }
 `;
 
-export function HomeScreen(props: Props): React$Node {
+export const HomeScreen = (props: Props): React$Node => {
   const [result] = useQuery({ query: PokemonsQuery });
 
   const { fetching, data, error } = result;
@@ -35,6 +35,8 @@ export function HomeScreen(props: Props): React$Node {
   if (error) {
     return <Text>{result.error.message}</Text>;
   }
+
+  console.log('hello polly', data);
 
   return (
     <View style={styles.container}>
@@ -55,7 +57,7 @@ export function HomeScreen(props: Props): React$Node {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
