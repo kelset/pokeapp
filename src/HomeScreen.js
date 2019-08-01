@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { useNavigation } from 'react-navigation-hooks';
+// import { useNavigation } from 'react-navigation-hooks';
 
 import type { NavigationScreenProp } from 'react-navigation';
 
