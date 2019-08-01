@@ -7,6 +7,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import { useNavigation } from 'react-navigation-hooks';
 
 import type { NavigationScreenProp } from 'react-navigation';
 
@@ -34,25 +35,45 @@ const PokemonsQuery = gql`
   }
 `;
 
-const renderItem = (pokemon: { number: number, name: string }) => (
-  <View key={pokemon.number} style={{ backgroundColor: 'coral', margin: 30 }}>
-    <Text>{pokemon.name}</Text>
-  </View>
-);
+// const renderItem = ({ item }: { item: Object }): React$Node => {
+//   const { navigate } = useNavigation();
+
+//   return (
+//     <TouchableOpacity
+//       accessibilityLabel="Go to pokemon details"
+//       accessibilityComponentType="button"
+//       accessibilityTraits="button"
+//       onPress={() => navigate('Details')}
+//       style={styles.itemRow}
+//     >
+//       <Text>{item.name}</Text>
+//     </TouchableOpacity>
+//   );
+// };
+
+// $FlowFixMe
+const keyExtractor = (item, index): string => item.number;
 
 export function HomeScreen(props: Props): React$Node {
-  return (
-    <View style={styles.container}>
+  const renderItem = ({ item }: { item: Object }): React$Node => {
+    return (
       <TouchableOpacity
-        accessibilityLabel="Go to details"
+        accessibilityLabel="Go to pokemon details"
         accessibilityComponentType="button"
         accessibilityTraits="button"
-        onPress={() => props.navigation.navigate('Details')}
+        onPress={() => props.navigation.navigate('Details', { item })}
+        style={styles.itemRow}
       >
-        <Text style={styles.welcome}>Hello this is the home screen</Text>
+        <Text>{item.name}</Text>
       </TouchableOpacity>
+    );
+  };
 
-      <Query query={PokemonsQuery} style={{ flex: 1 }}>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Hello this is the home screen</Text>
+
+      <Query query={PokemonsQuery} style={styles.flex1}>
         {({
           loading,
           error,
@@ -65,9 +86,14 @@ export function HomeScreen(props: Props): React$Node {
           if (loading) return <Text>Loading...</Text>;
           if (error) return <Text>Error :(</Text>;
 
-          console.log('hey here are my data', data.pokemons);
-          // $FlowFixMe
-          return <FlatList data={data.pokemons} renderItem={renderItem} />;
+          return (
+            <FlatList
+              data={data.pokemons}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              style={styles.flex1}
+            />
+          );
         }}
       </Query>
     </View>
@@ -82,5 +108,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  itemRow: {
+    flex: 1,
+    height: 30,
+    marginVertical: 10,
+  },
+  flex1: {
+    flex: 1,
   },
 });
