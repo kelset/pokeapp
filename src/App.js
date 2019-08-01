@@ -2,10 +2,13 @@
  * @flow
  */
 
+import React from 'react';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import codePush from 'react-native-code-push';
 // $FlowFixMe - flow is drunk again
 import { useScreens } from 'react-native-screens';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 import { HomeScreen } from './HomeScreen';
 import { DetailsScreen } from './DetailsScreen';
@@ -32,7 +35,19 @@ const RootStack = createStackNavigator(
   },
 );
 
-const AppContainer = createAppContainer(RootStack);
+const AppNavigator = createAppContainer(RootStack);
+
+const client = new ApolloClient({
+  uri: 'https://graphql-pokemon.now.sh',
+});
+
+const AppContainer = (): React$Node => {
+  return (
+    <ApolloProvider client={client}>
+      <AppNavigator />
+    </ApolloProvider>
+  );
+};
 
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
